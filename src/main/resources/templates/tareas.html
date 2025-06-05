@@ -7,19 +7,22 @@
 </head>
 <body>
 <header>
+    <svg class="header-bg" viewBox="0 0 100 20" preserveAspectRatio="none">
+        <path d="M0 20 L100 0 L100 20 Z"/>
+    </svg>
     <h1>Tablero de Tareas</h1>
-    <form th:action="@{/agregar}" method="post">
+    <form th:action="@{/agregar}" method="post" class="add-form">
         <input type="text" name="descripcion" placeholder="Nueva tarea" required/>
-        <button type="submit">Agregar</button>
+        <button type="submit" class="icon-button">+</button>
     </form>
 </header>
 <div class="board">
     <div class="column">
         <h2>Pendientes</h2>
         <div th:each="tarea : ${pendientes}" class="tarea">
-            <span th:text="${tarea.descripcion}"></span>
-            <form th:action="@{/completar/{id}(id=${tarea.id})}" method="post">
-                <button type="submit">Completar</button>
+            <form th:action="@{/completar/{id}(id=${tarea.id})}" method="post" class="tarea-form">
+                <input type="checkbox" onchange="this.form.submit()"/>
+                <span th:text="${tarea.descripcion}"></span>
             </form>
             <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post">
                 <button type="submit">Eliminar</button>
@@ -29,9 +32,9 @@
     <div class="column">
         <h2>Completadas</h2>
         <div th:each="tarea : ${completadas}" class="tarea">
-            <span th:text="${tarea.descripcion}"></span>
-            <form th:action="@{/incompletar/{id}(id=${tarea.id})}" method="post">
-                <button type="submit">Marcar pendiente</button>
+            <form th:action="@{/incompletar/{id}(id=${tarea.id})}" method="post" class="tarea-form">
+                <input type="checkbox" checked onchange="this.form.submit()"/>
+                <span th:text="${tarea.descripcion}"></span>
             </form>
             <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post">
                 <button type="submit">Eliminar</button>
