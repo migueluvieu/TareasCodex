@@ -29,7 +29,10 @@
                     <span></span>
                 </label>
             </form>
-            <span th:text="${tarea.descripcion}" onclick="enableEdit(this, [[${tarea.id}]])" class="tarea-text"></span>
+            <span th:text="${tarea.descripcion}" class="tarea-text" onclick="enableEdit(this, [[${tarea.id}]])"></span>
+            <button type="button" class="btn-flat edit-btn" onclick="enableEdit(this.previousElementSibling, [[${tarea.id}]])">
+                <i class="material-icons grey-text text-darken-2">edit</i>
+            </button>
             <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post">
                 <button type="submit" class="btn-flat"><i class="material-icons grey-text text-darken-2">delete</i></button>
             </form>
