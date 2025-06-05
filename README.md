@@ -12,4 +12,4 @@ Aplicación de ejemplo con Spring Boot para gestionar una lista de tareas en mem
 mvn spring-boot:run
 ```
 
-La aplicación estará disponible en `http://localhost:8080`.
+La aplicación estará disponible en `http://localhost:8084`.
