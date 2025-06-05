@@ -5,34 +5,33 @@
     <title>Tablero de Tareas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
-<body class="grey lighten-4">
-<nav class="blue">
+<body>
+<nav class="white z-depth-1">
     <div class="nav-wrapper container">
-        <span class="brand-logo">Tablero de Tareas</span>
-        <form th:action="@{/agregar}" method="post" class="right">
-            <div class="input-field inline">
-                <input id="nuevaTarea" type="text" name="descripcion" placeholder="Nueva tarea" required>
-            </div>
-            <button type="submit" class="btn-floating waves-effect waves-light">
-                <i class="material-icons">add</i>
-            </button>
-        </form>
+        <span class="brand-logo grey-text text-darken-2">Tablero de Tareas</span>
     </div>
 </nav>
-<div class="container">
-    <ul class="collection" th:each="tarea : ${tareas}">
-        <li class="collection-item avatar tarea-item" th:classappend="${tarea.completada}? 'completed' : ''">
-            <form th:action="@{/toggle/{id}(id=${tarea.id})}" method="post" class="left">
+<div class="container task-board">
+    <form th:action="@{/agregar}" method="post" class="add-form">
+        <input id="nuevaTarea" type="text" name="descripcion" placeholder="Agregar una tarea" required>
+        <button type="submit" class="btn-floating waves-effect waves-light blue">
+            <i class="material-icons">add</i>
+        </button>
+    </form>
+    <ul class="task-list" th:each="tarea : ${tareas}">
+        <li class="task-item tarea-item" th:classappend="${tarea.completada}? 'completed' : ''">
+            <form th:action="@{/toggle/{id}(id=${tarea.id})}" method="post">
                 <label>
-                    <input type="checkbox" class="filled-in circle" th:checked="${tarea.completada}" onchange="this.form.submit()" />
+                    <input type="checkbox" class="filled-in" th:checked="${tarea.completada}" onchange="this.form.submit()" />
                     <span></span>
                 </label>
             </form>
             <span th:text="${tarea.descripcion}" onclick="enableEdit(this, [[${tarea.id}]])" class="tarea-text"></span>
-            <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post" class="secondary-content">
-                <button type="submit" class="btn-flat"><i class="material-icons red-text">delete</i></button>
+            <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post">
+                <button type="submit" class="btn-flat"><i class="material-icons grey-text text-darken-2">delete</i></button>
             </form>
         </li>
     </ul>
