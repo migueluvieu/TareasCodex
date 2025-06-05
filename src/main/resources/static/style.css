@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f6f7fb;
+    margin: 0;
+}
+header {
+    background-color: #1a73e8;
+    color: white;
+    padding: 1rem;
+}
+header form {
+    margin-top: 1rem;
+}
+.board {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+}
+.column {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.column h2 {
+    margin-top: 0;
+}
+.tarea {
+    background-color: #f1f3f4;
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.tarea form {
+    display: inline;
+}
+.tarea button {
+    margin-left: 0.5rem;
+}

@@ -21,7 +21,14 @@ public class TareaController {
 
     @GetMapping("/")
     public String listarTareas(Model model) {
-        model.addAttribute("tareas", tareas);
+        List<Tarea> pendientes = tareas.stream()
+                .filter(t -> !t.isCompletada())
+                .toList();
+        List<Tarea> completadas = tareas.stream()
+                .filter(Tarea::isCompletada)
+                .toList();
+        model.addAttribute("pendientes", pendientes);
+        model.addAttribute("completadas", completadas);
         return "tareas";
     }
 
@@ -38,6 +45,17 @@ public class TareaController {
         for (Tarea t : tareas) {
             if (t.getId() == id) {
                 t.setCompletada(true);
+                break;
+            }
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/incompletar/{id}")
+    public String incompletarTarea(@PathVariable("id") long id) {
+        for (Tarea t : tareas) {
+            if (t.getId() == id) {
+                t.setCompletada(false);
                 break;
             }
         }
