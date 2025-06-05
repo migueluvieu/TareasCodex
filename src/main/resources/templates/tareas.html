@@ -3,44 +3,54 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Tablero de Tareas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
-<body>
-<header>
-    <svg class="header-bg" viewBox="0 0 100 20" preserveAspectRatio="none">
-        <path d="M0 20 L100 0 L100 20 Z"/>
-    </svg>
-    <h1>Tablero de Tareas</h1>
-    <form th:action="@{/agregar}" method="post" class="add-form">
-        <input type="text" name="descripcion" placeholder="Nueva tarea" required/>
-        <button type="submit" class="icon-button">+</button>
-    </form>
-</header>
-<div class="board">
-    <div class="column">
-        <h2>Pendientes</h2>
-        <div th:each="tarea : ${pendientes}" class="tarea">
-            <form th:action="@{/completar/{id}(id=${tarea.id})}" method="post" class="tarea-form">
-                <input type="checkbox" onchange="this.form.submit()"/>
-                <span th:text="${tarea.descripcion}"></span>
-            </form>
-            <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post">
-                <button type="submit">Eliminar</button>
-            </form>
-        </div>
+<body class="grey lighten-4">
+<nav class="blue">
+    <div class="nav-wrapper container">
+        <span class="brand-logo">Tablero de Tareas</span>
+        <form th:action="@{/agregar}" method="post" class="right">
+            <div class="input-field inline">
+                <input id="nuevaTarea" type="text" name="descripcion" placeholder="Nueva tarea" required>
+            </div>
+            <button type="submit" class="btn-floating waves-effect waves-light">
+                <i class="material-icons">add</i>
+            </button>
+        </form>
     </div>
-    <div class="column">
-        <h2>Completadas</h2>
-        <div th:each="tarea : ${completadas}" class="tarea">
-            <form th:action="@{/incompletar/{id}(id=${tarea.id})}" method="post" class="tarea-form">
-                <input type="checkbox" checked onchange="this.form.submit()"/>
-                <span th:text="${tarea.descripcion}"></span>
+</nav>
+<div class="container">
+    <ul class="collection" th:each="tarea : ${tareas}">
+        <li class="collection-item avatar tarea-item" th:classappend="${tarea.completada}? 'completed' : ''">
+            <form th:action="@{/toggle/{id}(id=${tarea.id})}" method="post" class="left">
+                <label>
+                    <input type="checkbox" class="filled-in circle" th:checked="${tarea.completada}" onchange="this.form.submit()" />
+                    <span></span>
+                </label>
             </form>
-            <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post">
-                <button type="submit">Eliminar</button>
+            <span th:text="${tarea.descripcion}" onclick="enableEdit(this, [[${tarea.id}]])" class="tarea-text"></span>
+            <form th:action="@{/eliminar/{id}(id=${tarea.id})}" method="post" class="secondary-content">
+                <button type="submit" class="btn-flat"><i class="material-icons red-text">delete</i></button>
             </form>
-        </div>
-    </div>
+        </li>
+    </ul>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+function enableEdit(span, id) {
+    span.contentEditable = true;
+    span.focus();
+    span.onblur = function() {
+        span.contentEditable = false;
+        fetch('/editar/' + id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'descripcion=' + encodeURIComponent(span.textContent)
+        }).then(() => { window.location.reload(); });
+    };
+}
+</script>
 </body>
 </html>
